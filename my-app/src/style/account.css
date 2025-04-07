@@ -14,7 +14,7 @@
 
 .account-page.visible {
     opacity: 1;
-    transform: translateY(0);  /* Changed to translateY */
+    transform: translateY(0);
 }
 
 .account-card {
@@ -49,11 +49,11 @@
     z-index: -1;
     animation: borderGlow 6s linear infinite;
 }
+
 @keyframes borderGlow {
     0% {
         background-position: 0 0;
     }
-
     100% {
         background-position: 300% 0;
     }
@@ -82,7 +82,6 @@
         opacity: 0;
         transform: rotate(35deg) translateY(0);
     }
-
     50% {
         opacity: 0.3;
         transform: rotate(35deg) translateY(-10%);
@@ -91,11 +90,11 @@
 
 @keyframes slideInFromBottom {
     from {
-        transform: translateY(50px) scale(0.9);  /* Changed to translateY */
+        transform: translateY(50px) scale(0.9);
         opacity: 0;
     }
     to {
-        transform: translateY(0) scale(1);  /* Changed to translateY */
+        transform: translateY(0) scale(1);
         opacity: 1;
     }
 }
@@ -294,14 +293,14 @@
     background-color: #111111;
     padding: 30px;
     border-radius: 15px;
-    width: 600px; /* Increased width for better readability */
+    width: 600px; 
     max-width: 90%;
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(0, 255, 0, 0.3);
     animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    overflow-y: auto; /* Add scroll for long content */
-    max-height: 80vh; /* Limit the maximum height of the modal */
+    overflow-y: auto; 
+    max-height: 80vh; 
 }
 
 @keyframes popIn {
@@ -377,32 +376,41 @@
     font-family: 'JetBrainsMono', monospace;
 }
 
-/* JSON Display Styles */
 .json-display {
     font-family: 'JetBrainsMono', monospace;
     font-size: 14px;
-    color: #eee;
-    white-space: pre-wrap; /* Allow line breaks */
-    word-wrap: break-word; /* Break long words */
-    overflow-x: auto; /* Horizontal scroll if content is too wide */
-    padding: 10px;
-    background-color: #222;
-    border-radius: 5px;
-    border: 1px solid #444;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    line-height: 1.5;
 }
 
 .json-key {
-    color: #00FF00;
+    color: #9cdcfe;
+    font-weight: bold;
 }
 
 .json-value {
-    color: #ddd;
+    color: #ce9178;
 }
 
+.json-display ul {
+    list-style-type: none;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.json-display li {
+    margin-bottom: 5px;
+}
 
 @media (max-width: 768px) {
     .account-page {
-        padding: 20px;
         justify-content: center;
     }
 
@@ -417,8 +425,13 @@
     }
 
     .account-avatar {
-        width: 120px;
-        height: 120px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-sizing: border-box;
+        min-width: 50px;
+        min-height: 50px;
     }
 
     .account-name {
@@ -445,33 +458,3 @@
         max-width: 95%;
     }
 }
-
-.json-key {
-    color: #9cdcfe; /* Цвет ключей */
-    font-weight: bold;
-  }
-  
-  .json-value {
-    color: #ce9178; /* Цвет значений */
-  }
-  
-  .json-display {
-    background-color: #1e1e1e; /* Темный фон для JSON */
-    color: #d4d4d4; /* Светлый цвет текста */
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto; /* Горизонтальная прокрутка для длинных строк */
-    font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт */
-    font-size: 14px;
-    white-space: pre-wrap; /* Перенос строк */
-  }
-  
-  .json-display ul {
-      list-style-type: none;
-      padding-left: 20px;
-      margin: 0;
-  }
-  
-  .json-display li {
-      margin-bottom: 5px;
-  }
