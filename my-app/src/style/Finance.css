@@ -1,0 +1,694 @@
+.main {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* News Section Styles */
+.news-section {
+  flex: 3;
+}
+
+.news-content {
+  background-color: #111111;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border: 1px solid #333;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.news-content:hover {
+  box-shadow: 0 8px 25px rgba(0, 255, 0, 0.2);
+}
+
+.news-content::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.2) 0%, rgba(0, 255, 0, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.news-content:hover::after {
+  opacity: 1;
+  animation: pulseLight 3s infinite alternate;
+}
+
+@keyframes pulseLight {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.news-content h2 {
+  color: #00ff00;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+  font-family: 'Jersey20', sans-serif;
+  position: relative;
+}
+
+.news-content h2::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #00ff00;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.news-content:hover h2::before {
+  visibility: visible;
+  width: 100%;
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.news-item {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid #333;
+  position: relative;
+}
+
+.news-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+  border-color: #00ff00;
+}
+
+.news-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.03), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.news-item:hover::before {
+  transform: translateX(100%);
+}
+
+.news-image {
+  flex: 0 0 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.news-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 0, 0);
+  transition: background 0.3s ease;
+}
+
+.news-item:hover .news-image::after {
+  background: rgba(0, 255, 0, 0.05);
+}
+
+.news-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.news-item:hover .news-image img {
+  transform: scale(1.1) rotate(1deg);
+}
+
+.news-details {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.news-details::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #00ff00, transparent);
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.news-item:hover .news-details::after {
+  transform: translateX(0);
+  opacity: 0.5;
+}
+
+.news-details h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  font-family: 'JetBrainsMono', monospace;
+  transition: color 0.3s ease;
+}
+
+.news-item:hover .news-details h3 {
+  color: #00ff00;
+}
+
+.news-summary {
+  margin-bottom: 15px;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+  flex-grow: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.news-item:hover .news-summary {
+  color: #fff;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.news-source {
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.news-item:hover .news-source {
+  color: #00ff00;
+}
+
+.read-more {
+  display: inline-block;
+  color: #00ff00;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.read-more::after {
+  content: '→';
+  position: absolute;
+  left: 120px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  margin-left: 5px;
+}
+
+.read-more:hover::after {
+  opacity: 1;
+}
+
+.read-more:hover {
+  color: #4dff4d;
+  transform: translateX(3px);
+}
+
+.crypto-aside {
+  flex: 1;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  z-index: 90;
+}
+
+.crypto-content {
+  background-color: #111111;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border: 1px solid #333;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.crypto-content:hover {
+  box-shadow: 0 8px 25px rgba(0, 255, 0, 0.2);
+  border-color: #00ff00;
+}
+
+.crypto-content::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.15) 0%, rgba(0, 255, 0, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.crypto-content:hover::after {
+  opacity: 1;
+  animation: pulseLight 3s infinite alternate;
+}
+
+.crypto-content h2 {
+  color: #00ff00;
+  font-size: 24px;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+  font-family: 'Jersey20', sans-serif;
+}
+
+.crypto-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.crypto-tab {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: #ccc;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  outline: none;
+}
+
+.crypto-tab:hover {
+  background-color: #2a2a2a;
+  color: #00ff00;
+  border-color: #00ff00;
+}
+
+.crypto-tab.active {
+  background-color: #00ff00;
+  color: #111;
+  border-color: #00ff00;
+  font-weight: 600;
+}
+
+.crypto-list-container {
+  height: 350px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.crypto-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-right: 5px; 
+  scrollbar-width: thin; 
+  scrollbar-color: rgba(0, 255, 0, 0.3) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 255, 0, 0.3);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 255, 0, 0.5);
+  }
+}
+
+.crypto-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  transition: all 0.3s ease;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.crypto-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 255, 0, 0.15);
+  border-color: #00ff00;
+}
+
+.crypto-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.05), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.crypto-item:hover::before {
+  transform: translateX(100%);
+}
+
+.crypto-logo {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.crypto-item:hover .crypto-logo {
+  transform: rotate(360deg);
+}
+
+.crypto-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo-placeholder {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+}
+
+.crypto-info {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.crypto-name-symbol {
+  flex: 1;
+  min-width: 0;
+}
+
+.crypto-name-symbol h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crypto-item:hover .crypto-name-symbol h3 {
+  color: #00ff00;
+}
+
+.crypto-symbol {
+  font-size: 12px;
+  color: #999;
+  margin-left: 5px;
+  text-transform: uppercase;
+}
+
+.crypto-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.price-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.price-change {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.price-change.positive {
+  color: #00ff00;
+}
+
+.price-change.negative {
+  color: #ff4d4d;
+}
+
+/* Search Bar Styles */
+.search-bar {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%; 
+}
+
+.search-bar input {
+  width: 100%;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: #00FF00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.search-bar input::placeholder {
+  color: #777;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #777;
+  transition: color 0.3s ease;
+}
+
+.search-bar input:focus + .search-icon {
+  color: #00ff00;
+}
+
+.clear-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.clear-search:hover {
+  color: #ff4d4d;
+}
+
+/* Loading and error states */
+.loading-spinner {
+  border: 3px solid #333;
+  border-top: 3px solid #00ff00;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.news-loading,
+.crypto-loading {
+  text-align: center;
+  padding: 40px;
+  color: #ccc;
+}
+
+.news-error,
+.crypto-error {
+  text-align: center;
+  padding: 30px;
+  color: #ff4d4d;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.no-news,
+.no-crypto {
+  text-align: center;
+  padding: 30px;
+  color: #ccc;
+  font-style: italic;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .news-section {
+    width: 100%;
+  }
+
+  .crypto-aside {
+    position: static;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .crypto-content {
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    padding: 15px;
+  }
+
+  .news-item {
+    flex-direction: column;
+  }
+
+  .news-image {
+    flex: 0 0 200px;
+  }
+
+  .news-content h2,
+  .crypto-content h2 {
+    font-size: 20px;
+  }
+
+  .crypto-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crypto-tab {
+    padding: 12px;
+    text-align: center;
+  }
+
+  .crypto-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .crypto-info {
+    flex-direction: row; /* Изменено на строку для выравнивания */
+    align-items: center; /* Выравнивание по центру */
+    justify-content: space-between; /* Распределение пространства между элементами */
+    width: 100%;
+  }
+
+  .crypto-name-symbol {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .crypto-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 10px; 
+  }
+
+  .crypto-list-container {
+    min-height: 300px;
+  }
+}

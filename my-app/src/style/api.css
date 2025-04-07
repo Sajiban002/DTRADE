@@ -1,0 +1,176 @@
+/* API Token Page Styles */
+.api-token-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 80px;
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .api-token-container {
+    display: flex;
+    width: 90%;
+    max-width: 1400px;
+    background-color: #000000;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .api-token-left {
+    flex: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+    padding: 40px;
+  }
+  
+  .placeholder-3d-box {
+    width: 550px;
+    height: 550px;
+    background-color: #000000;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .api-token-right {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .api-token-right h1 {
+    font-family: 'Jersey20', sans-serif;
+    color: #00FF00;
+    margin-bottom: 40px;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .token-display {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .token-input {
+    width: 100%;
+    padding: 18px;
+    background-color: #111;
+    border: 2px solid #00FF00;
+    color: #00FF00;
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 1rem;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .token-input:focus {
+    outline: none;
+    border-color: #00FF00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  }
+  
+  .token-actions {
+    display: flex;
+    gap: 25px;
+  }
+  
+  .token-copy-btn,
+  .token-share-btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'JetBrainsMono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .token-copy-btn {
+    background-color: #00FF00;
+    color: black;
+  }
+  
+  .token-share-btn {
+    background-color: #222;
+    color: #00FF00;
+    border: 2px solid #00FF00;
+  }
+  
+  .token-copy-btn:hover {
+    background-color: #00cc00;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+  }
+  
+  .token-share-btn:hover {
+    background-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+  }
+  
+  .token-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .token-carousel-canvas {
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  
+  @media (max-width: 768px) {
+    .api-token-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .api-token-left,
+    .api-token-right {
+      width: 100%;
+      padding: 20px;
+    }
+  
+    .placeholder-3d-box {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+  
+    .api-token-right h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+  
+    .token-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .token-copy-btn,
+    .token-share-btn {
+      padding: 12px 30px;
+    }
+  
+    .token-carousel-canvas {
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }

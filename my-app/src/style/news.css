@@ -1,0 +1,127 @@
+.news-hero {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    height: 400px;
+    margin: 2rem auto;
+    margin-top: 110px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2);
+  }
+  
+  .news-hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .news-hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0.8;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .news-hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    width: 90%;
+    padding: 1rem;
+  }
+  
+  .news-hero-title {
+    font-family: 'Jersey20', sans-serif;
+    font-size: 92px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+  }
+  
+  @media (max-width: 768px) {
+    .news-hero {
+      height: 350px;
+    }
+  
+    .news-hero-title {
+      font-size: 48px;
+    }
+  }
+  
+  .carousel-container {
+    margin-top: 60px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #000000;
+    padding: 20px 0; 
+  }
+  
+  .logo-track {
+    display: inline-flex;
+    animation: scroll 100s linear infinite; 
+    white-space: nowrap;
+  }
+  
+  .logo-item {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 50px;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  
+  .logo-item img {
+    max-height: 25px; 
+    filter: grayscale(100%);
+    transition: all 0.3s;
+  }
+  
+  .logo-item:hover {
+    opacity: 0.9; 
+  }
+  
+  .logo-item:hover img {
+    filter: grayscale(0%) ; 
+  }
+  
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .carousel-container::before,
+  .carousel-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%; 
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  .carousel-container::before {
+    left: 0;
+    background: linear-gradient(to right, #000000 50%, transparent 100%); 
+  }
+  
+  .carousel-container::after {
+    right: 0;
+    background: linear-gradient(to left, #000000 50%, transparent 100%); 
+  }

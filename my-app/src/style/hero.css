@@ -1,0 +1,166 @@
+.hero {
+    background-image: url('../photo/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    min-height: 800px;
+    max-height: 1082.5px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  
+  .hero.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .hero-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 250px 40px 80px;
+    max-width: 1800px;
+  }
+  
+  .hero-title {
+    font-size: 56px;
+    font-weight: normal;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+  }
+  
+  .hero-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .statscon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+  }
+  
+  .statscon.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .statitem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 60px;
+  }
+  
+  .statnum {
+    font-size: 56px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .statlab {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+  
+  .statdivide {
+    width: 1px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  @keyframes countUp {
+    from {
+      opacity: 0.5;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .statnum
+ {
+    animation: countUp 0.2s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 600px;
+    }
+    
+    .hero-content {
+      padding: 40px 20px 40px;
+      justify-content: flex-start;
+    }
+    
+    .hero-title {
+      font-size: 32px;
+      margin-top: 60px;
+    }
+    
+    .statscon {
+      flex-direction: column;
+      gap: 30px;
+      margin-top: 60px;
+      padding: 0 20px;
+    }
+    
+    .statdivide {
+      width: 80px;
+      height: 1px;
+    }
+    
+    .statitem
+     {
+      padding: 0 20px; 
+    }
+    
+    .statnum {
+      font-size: 40px; 
+    }
+    
+    .statlab {
+      font-size: 16px; 
+    }
+  }
+  
+  .right-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  @media (max-width: 480px) {
+    .hero-title {
+      font-size: 28px;
+    }
+    
+    .statnum {
+      font-size: 36px;
+    }
+    
+    .dtrade-ai-button {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  }
+  

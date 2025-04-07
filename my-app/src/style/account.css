@@ -1,0 +1,477 @@
+.account-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    background-color: #000;
+    padding: 120px 40px 20px;
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: translateX(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.account-page.visible {
+    opacity: 1;
+    transform: translateY(0);  /* Changed to translateY */
+}
+
+.account-card {
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    display: flex;
+    width: 900px;
+    height: 700px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transform-origin: center;
+    animation: slideInFromCenter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.account-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+            rgba(0, 255, 0, 0),
+            rgba(0, 255, 0, 0.3),
+            rgba(0, 255, 0, 0),
+            rgba(0, 255, 0, 0.3),
+            rgba(0, 255, 0, 0));
+    border-radius: 22px;
+    z-index: -1;
+    animation: borderGlow 6s linear infinite;
+}
+@keyframes borderGlow {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 300% 0;
+    }
+}
+
+.account-card::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    background: radial-gradient(circle at center,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 20%,
+            transparent 100%);
+    opacity: 0;
+    animation: diamondSparkle 6s ease-in-out infinite;
+    transform: rotate(35deg);
+    pointer-events: none;
+}
+
+@keyframes diamondSparkle {
+    0%,
+    100% {
+        opacity: 0;
+        transform: rotate(35deg) translateY(0);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: rotate(35deg) translateY(-10%);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(50px) scale(0.9);  /* Changed to translateY */
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);  /* Changed to translateY */
+        opacity: 1;
+    }
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0px 40px rgba(0, 255, 0, 0.1); }
+    50% { box-shadow: 0 0px 40px rgba(0, 255, 0, 0.3); }
+    100% { box-shadow: 0 0px 40px rgba(0, 255, 0, 0.1); }
+}
+
+.account-left {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.account-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 25px;
+    border: 4px solid rgba(0, 255, 0, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.account-avatar::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 70%);
+    animation: pulse 3s infinite alternate;
+    opacity: 0.3;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.3; }
+    100% { transform: scale(1.2); opacity: 0; }
+}
+
+.account-name {
+    font-family: 'Jersey20', sans-serif;
+    font-size: 28px;
+    color: #00FF00;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.account-username {
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+.edit-profile-button,
+.logout-button,
+.modal-button,
+.modal-upload-button,
+.modal-close-button {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 16px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.edit-profile-button::before,
+.modal-button::before,
+.modal-upload-button::before,
+.modal-close-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(0, 255, 0, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.edit-profile-button:hover::before,
+.modal-button:hover::before,
+.modal-upload-button:hover::before,
+.modal-close-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.edit-profile-button:hover,
+.modal-button:hover,
+.modal-upload-button:hover,
+.modal-close-button:hover {
+    background-color: #00FF00;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+.logout-button {
+    background-color: #ff4444;
+}
+
+.logout-button:hover {
+    background-color: #cc0000;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+}
+
+.account-right {
+    flex: 1;
+    padding: 20px;
+    color: #ddd;
+    font-family: 'JetBrainsMono', monospace;
+    overflow-y: auto;
+}
+
+.account-right h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #00FF00;
+}
+
+.account-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.account-right li {
+    margin-bottom: 10px;
+}
+
+.account-right button {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'JetBrainsMono', monospace;
+    transition: background-color 0.3s ease;
+}
+
+.account-right button:hover {
+    background-color: #444;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInModal 0.5s ease-out forwards;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: #111111;
+    padding: 30px;
+    border-radius: 15px;
+    width: 600px; /* Increased width for better readability */
+    max-width: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    overflow-y: auto; /* Add scroll for long content */
+    max-height: 80vh; /* Limit the maximum height of the modal */
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    font-family: 'Jersey20', sans-serif;
+    font-size: 28px;
+    color: #00FF00;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #00FF00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+    outline: none;
+}
+
+.success-message {
+    color: #00FF00;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: 'JetBrainsMono', monospace;
+}
+
+.error-message {
+    color: #ff4444;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: 'JetBrainsMono', monospace;
+}
+
+.loading,
+.error {
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 100px;
+    font-family: 'JetBrainsMono', monospace;
+}
+
+/* JSON Display Styles */
+.json-display {
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 14px;
+    color: #eee;
+    white-space: pre-wrap; /* Allow line breaks */
+    word-wrap: break-word; /* Break long words */
+    overflow-x: auto; /* Horizontal scroll if content is too wide */
+    padding: 10px;
+    background-color: #222;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+.json-key {
+    color: #00FF00;
+}
+
+.json-value {
+    color: #ddd;
+}
+
+
+@media (max-width: 768px) {
+    .account-page {
+        padding: 20px;
+        justify-content: center;
+    }
+
+    .account-card {
+        width: 100%;
+        min-height: auto;
+        flex-direction: column;
+    }
+
+    .account-left {
+        padding: 20px;
+    }
+
+    .account-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .account-name {
+        font-size: 24px;
+    }
+
+    .account-username {
+        font-size: 16px;
+    }
+
+    .edit-profile-button,
+    .logout-button {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .account-right {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+    }
+}
+
+.json-key {
+    color: #9cdcfe; /* Цвет ключей */
+    font-weight: bold;
+  }
+  
+  .json-value {
+    color: #ce9178; /* Цвет значений */
+  }
+  
+  .json-display {
+    background-color: #1e1e1e; /* Темный фон для JSON */
+    color: #d4d4d4; /* Светлый цвет текста */
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Горизонтальная прокрутка для длинных строк */
+    font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт */
+    font-size: 14px;
+    white-space: pre-wrap; /* Перенос строк */
+  }
+  
+  .json-display ul {
+      list-style-type: none;
+      padding-left: 20px;
+      margin: 0;
+  }
+  
+  .json-display li {
+      margin-bottom: 5px;
+  }
