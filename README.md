@@ -1,5 +1,6 @@
 # DTRADE
 Создание системы для анализа и прогнозирования финансовых рынков с использованием искусственного интеллекта.
+
 Python:
 ```bash
 pip install requests fastapi uvicorn python-dotenv google-generativeai yfinance
