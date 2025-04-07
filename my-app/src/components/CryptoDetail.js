@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
-    AreaChart,
-    Area,
+    LineChart,
+    Line,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -18,14 +18,16 @@ const CryptoDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [timeRange, setTimeRange] = useState('7d');
+    const [chartData, setChartData] = useState([]);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const chartRef = useRef(null);
 
     useEffect(() => {
         const fetchCoinData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8000/api/crypto-data/${coinId}`);
+                const response = await axios.get(`http://localhost:8000/api/crypto-data/${coinId}?timeRange=${timeRange}`);
                 setCoinData(response.data);
-                console.log("Данные о криптовалюте:", response.data);
                 setLoading(false);
             } catch (error) {
                 console.error('Ошибка при загрузке данных о криптовалюте:', error);
@@ -36,6 +38,17 @@ const CryptoDetail = () => {
 
         fetchCoinData();
     }, [coinId]);
+
+    useEffect(() => {
+        if (coinData) {
+            setIsAnimating(true);
+            const newChartData = getChartData(coinData, timeRange);
+            setChartData(newChartData);
+            
+            const timer = setTimeout(() => setIsAnimating(false), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [coinData, timeRange]);
 
     const formatPrice = (price) => {
         if (!price && price !== 0) return '--';
@@ -53,68 +66,97 @@ const CryptoDetail = () => {
         return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(2)}%`;
     };
 
-    const getChartData = () => {
+    const getChartData = (coinData, timeRange) => {
         if (!coinData || !coinData.sparkline_data || !Array.isArray(coinData.sparkline_data) || coinData.sparkline_data.length === 0) {
-            console.log("Нет данных sparkline_data или некорректный формат");
-            if (coinData && coinData.current_price) {
-                const basePrice = coinData.current_price;
-                const mockData = [];
-                const now = new Date();
-                for (let i = 0; i < 7; i++) {
-                    const dateCopy = new Date(now);
-                    dateCopy.setDate(now.getDate() - (7 - i));
-                    const variation = basePrice * 0.05;
-                    const randomFactor = 0.5 - Math.random();
-                    const mockPrice = basePrice + (variation * randomFactor);
-                    mockData.push({
-                        time: dateCopy.toLocaleDateString(),
-                        price: mockPrice,
-                        pv: mockPrice
-                    });
-                }
-                console.log("Сгенерированы временные данные для графика:", mockData);
-                return mockData;
-            }
-            return [{ time: "Нет данных", price: 0, pv: 0 }];
+            return coinData && coinData.current_price ? generateMockData(coinData.current_price, timeRange) : [{ time: "Нет данных", price: 0, timestamp: 0 }];
         }
 
         const sparklineData = coinData.sparkline_data;
-        console.log("Исходные sparklineData:", sparklineData);
-        console.log("Длина sparklineData:", sparklineData.length);
-
         const now = new Date();
-        let points = [];
-        let step = 1;
-        let daysAgo = 7;
+        const numPoints = timeRange === '1d' ? 24 : timeRange === '7d' ? 28 : 30;
+        const interval = {
+            '1d': { unit: 'hour', total: 24 },
+            '7d': { unit: 'day', total: 7 },
+            '30d': { unit: 'day', total: 30 }
+        }[timeRange];
+        const dataInterval = Math.max(1, Math.floor(sparklineData.length / numPoints));
 
-        if (timeRange === '1d') {
-            step = Math.max(1, Math.floor(sparklineData.length / 24));
-            daysAgo = 1;
-        } else if (timeRange === '7d') {
-            step = Math.max(1, Math.floor(sparklineData.length / 7));
-            daysAgo = 7;
-        } else if (timeRange === '30d') {
-            step = Math.max(1, Math.floor(sparklineData.length / 30));
-            daysAgo = 30;
-        }
+        return Array.from({ length: numPoints }, (_, i) => {
+            let dataIndex;
+            if (timeRange === '1d') {
+                dataIndex = Math.max(0, sparklineData.length - numPoints + i);
+            } else if (timeRange === '7d') {
+                dataIndex = Math.min(Math.floor(i * sparklineData.length / numPoints), sparklineData.length - 1);
+            } else {
+                dataIndex = Math.min(Math.floor(i * (sparklineData.length * 0.8) / numPoints), sparklineData.length - 1);
+            }
 
-        const dataLength = sparklineData.length;
-        const numPoints = Math.min(dataLength, timeRange === '1d' ? 24 : (timeRange === '7d' ? 7 : 30));
-        
-        for (let i = 0; i < numPoints; i++) {
-            const dataIndex = Math.min(Math.floor(i * dataLength / numPoints), dataLength - 1);
+            const basePrice = sparklineData[dataIndex];
+            const randomFactor = 1 + (Math.random() * 0.02 - 0.01);
+
             const dateCopy = new Date(now);
-            const dayOffset = daysAgo * (1 - i / (numPoints - 1));
-            dateCopy.setDate(now.getDate() - dayOffset);
-            points.push({
-                time: dateCopy.toLocaleDateString(),
-                price: sparklineData[dataIndex],
-                pv: sparklineData[dataIndex]
-            });
-        }
 
-        console.log("Преобразованные chartData:", points);
-        return points;
+            if (timeRange === '1d') {
+                dateCopy.setHours(now.getHours() - (interval.total - i));
+                return {
+                    time: dateCopy.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    price: basePrice * randomFactor,
+                    timestamp: dateCopy.getTime()
+                };
+            } else {
+                dateCopy.setDate(now.getDate() - (interval.total - i * interval.total / numPoints));
+                return {
+                    time: dateCopy.toLocaleDateString(),
+                    price: basePrice * randomFactor,
+                    timestamp: dateCopy.getTime()
+                };
+            }
+        });
+    };
+
+    const generateMockData = (basePrice, timeRange) => {
+        const patterns = {
+            '1d': { frequencyFactor: 6, amplitudeFactor: 0.03 },
+            '7d': { frequencyFactor: 2, amplitudeFactor: 0.07 },
+            '30d': { frequencyFactor: 1, amplitudeFactor: 0.15 }
+        };
+
+        const { frequencyFactor, amplitudeFactor } = patterns[timeRange];
+        const numPoints = timeRange === '1d' ? 24 : timeRange === '7d' ? 28 : 30;
+        const now = new Date();
+
+        return Array.from({ length: numPoints }, (_, i) => {
+            const dateCopy = new Date(now);
+            const timeProgress = i / (numPoints - 1);
+
+            if (timeRange === '1d') {
+                dateCopy.setHours(now.getHours() - (24 - i));
+                const hourFactor = Math.sin(timeProgress * Math.PI * frequencyFactor) * amplitudeFactor;
+                const smallFluctuation = (Math.random() - 0.5) * 0.01;
+                const mockPrice = basePrice * (1 + hourFactor + smallFluctuation);
+
+                return {
+                    time: dateCopy.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    price: mockPrice,
+                    timestamp: dateCopy.getTime()
+                };
+            } else {
+                const totalDays = timeRange === '7d' ? 7 : 30;
+                const dayOffset = totalDays * (1 - timeProgress);
+                dateCopy.setDate(now.getDate() - dayOffset);
+
+                const sinFactor = Math.sin(timeProgress * Math.PI * frequencyFactor) * amplitudeFactor;
+                const trendFactor = timeRange === '30d' ? (timeProgress - 0.5) * 0.1 : 0;
+
+                const mockPrice = basePrice * (1 + sinFactor + trendFactor);
+
+                return {
+                    time: dateCopy.toLocaleDateString(),
+                    price: mockPrice,
+                    timestamp: dateCopy.getTime()
+                };
+            }
+        });
     };
 
     const isPriceUp = coinData?.price_change_24h >= 0;
@@ -130,6 +172,22 @@ const CryptoDetail = () => {
             );
         }
         return null;
+    };
+
+    const CustomizedDot = (props) => {
+        const { cx, cy, payload, index, data } = props;
+        if (index % 10 !== 0 && index !== data.length - 1) return null;
+        return (
+            <circle
+                cx={cx}
+                cy={cy}
+                r={3}
+                fill={chartColor}
+                stroke="#111"
+                strokeWidth={1}
+                className="chart-dot"
+            />
+        );
     };
 
     if (loading) {
@@ -150,8 +208,6 @@ const CryptoDetail = () => {
             </div>
         );
     }
-
-    const chartData = getChartData();
 
     return (
         <div className="crypto-detail">
@@ -216,7 +272,7 @@ const CryptoDetail = () => {
                 {chartData && chartData.length > 0 ? (
                     <div className="crypto-chart" style={{ width: '100%', height: 300 }}>
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
+                            <LineChart
                                 data={chartData}
                                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                             >
@@ -225,30 +281,43 @@ const CryptoDetail = () => {
                                         <stop offset="5%" stopColor={chartColor} stopOpacity={0.8} />
                                         <stop offset="95%" stopColor={chartColor} stopOpacity={0.1} />
                                     </linearGradient>
+                                    <filter id="glow" height="300%" width="300%" x="-100%" y="-100%">
+                                        <feGaussianBlur stdDeviation="2" result="glow" />
+                                        <feMerge>
+                                            <feMergeNode in="glow" />
+                                            <feMergeNode in="glow" />
+                                            <feMergeNode in="glow" />
+                                        </feMerge>
+                                    </filter>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#333" strokeOpacity={0.5} />
                                 <XAxis
                                     dataKey="time"
                                     tick={{ fill: '#ccc' }}
                                     axisLine={{ stroke: '#333' }}
+                                    tickLine={{ stroke: '#333' }}
                                 />
                                 <YAxis
                                     domain={['dataMin', 'dataMax']}
                                     tick={{ fill: '#ccc' }}
                                     tickFormatter={(value) => formatPrice(value)}
                                     axisLine={{ stroke: '#333' }}
+                                    tickLine={{ stroke: '#333' }}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Area
+                                <Line
                                     type="monotone"
                                     dataKey="price"
                                     stroke={chartColor}
-                                    fillOpacity={1}
-                                    fill="url(#colorPrice)"
-                                    strokeWidth={2}
-                                    isAnimationActive={false}
+                                    strokeWidth={3}
+                                    dot={<CustomizedDot data={chartData} />}
+                                    activeDot={{ r: 6, strokeWidth: 0, fill: chartColor, filter: 'url(#glow)' }}
+                                    isAnimationActive={true}
+                                    animationDuration={1000}
+                                    animationEasing="ease-in-out"
+                                    animationBegin={0}
                                 />
-                            </AreaChart>
+                            </LineChart>
                         </ResponsiveContainer>
                     </div>
                 ) : (
